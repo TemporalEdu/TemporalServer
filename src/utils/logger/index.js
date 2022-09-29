@@ -62,6 +62,7 @@ class TemporalLogger {
 		// Log the message
 		this._log(message, 'fatal');
 		// Exit the process
+		this.closeLogFile();
 		process.exit(1);
 	}
 
