@@ -3,11 +3,11 @@ const path = require('path');
 const chalk = require('chalk');
 
 let leftPad = (str, len, char) => {
-	  str = str.toString();
-	  while (str.length < len) {
-				str = char + str;
-		}
-		return str;
+	str = str.toString();
+	while (str.length < len) {
+		str = char + str;
+	}
+	return str;
 }
 
 class TemporalLogger {
@@ -103,9 +103,7 @@ class TemporalLogger {
 
 		// Add the log to the logs array
 		this._logs.push({
-			date: date,
-			level: level,
-			message: message
+			date: date, level: level, message: message
 		});
 	}
 
