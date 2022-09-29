@@ -32,7 +32,7 @@ module.exports = function (expressServer, routesObject) {
 										lastRequest: Date.now()
 									};
 								} else {
-									console.log(chalk.yellow(`[WARN] ${req.method} ${req.path} ${req.ip} 429`))
+									global.logger.warn(`${req.method} ${req.path} ${req.ip} 429`);
 									// Send a 429 Too Many Requests error
 									return res.status(429).send({
 										error: 'Too many requests',
@@ -55,19 +55,30 @@ module.exports = function (expressServer, routesObject) {
 					}
 					// Run the route handler
 					await route.handler(req, res);
-					console.log(chalk.blue(`[INFO] ${req.method} ${req.path} ${req.ip} ${res.statusCode}`));
+					global.logger.info(`${req.method} ${req.path} ${req.ip} ${res.statusCode}`);
 				} catch (err) {
 					// Send a 500 Internal Server Error
-					console.log(chalk.red(`[ERROR] ${req.method} ${req.path} ${req.ip} 500`));
+					global.logger.error(`${req.method} ${req.path} ${req.ip} 500`);
+					global.logger.logRaw(err.stack);
 					return res.status(500).send({
 						error: 'Internal Server Error',
 						status: 500,
 						message: 'An internal server error has occurred. Please try again later.'
 					});
 					// Log the error
-					console.error(err);
 				}
 			});
+			global.logger.info("Attached route " + route.path + " (" + route.method + ")");
 		}
 	}
+	// Set up a 404 handler
+	expressServer.use((req, res) => {
+		global.logger.warn(`${req.method} ${req.path} ${req.ip} 404`);
+		// Send a 404 Not Found error
+		return res.status(404).send({
+			error: 'Not Found',
+			status: 404,
+			message: 'The requested resource could not be found.'
+		});
+	});
 }

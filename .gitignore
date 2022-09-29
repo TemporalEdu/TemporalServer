@@ -30,3 +30,6 @@ nbproject/
 # Eclipse
 .classpath
 .project
+
+*.log
+src/logs/

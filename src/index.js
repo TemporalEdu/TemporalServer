@@ -26,6 +26,11 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
+const Logger = require('./utils/logger/index');
+const logger = new Logger(path.join(__dirname, 'logs'));
+
+// Hacky way to make logger available to all files
+global.logger = logger;
 
 // Local dependencies
 const printBanner = require('./utils/printBanner');
@@ -37,6 +42,9 @@ dotenv.config();
 
 // Create the Express server
 const app = express();
+
+// We really need to print this banner
+printBanner();
 
 // Enable middleware
 app.use(cors());
@@ -53,6 +61,5 @@ attachRoutes(app, routes);
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	printBanner();
-	console.log(`Server started on port ${port}`);
+	logger.info(`Server started on port ${port}`);
 });

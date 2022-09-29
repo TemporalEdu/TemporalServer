@@ -5,7 +5,7 @@ const path = require('path');
 const getRoutes = () => {
 	// The routes folder contains all the routes
 	const routesFolder = path.join(__dirname, '..', 'routes');
-	// The goal is to get all of the routes in the routes folder
+	// The goal is to get all the routes in the routes folder
 	// These routes can be nested - for example, the test route is in routes/test/index.js
 	let routes = [];
 	// Get all the files in the routes folder
